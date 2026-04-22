@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Sun, Moon, Coffee, Zap, Sparkles, BookOpen, Briefcase, Heart, Users, Download, Bell } from "lucide-react"
 import Icon from "@/components/ui/icon"
 import Schedule from "@/pages/Schedule"
+import SectionScreen, { SectionType } from "@/pages/SectionScreen"
 
 type Theme = "day" | "night" | "coffee" | "mint" | "electric"
 
@@ -191,11 +192,15 @@ const themeButtonVariants = {
 
 export default function SocialLinksLanding() {
   const [currentTheme, setCurrentTheme] = useState<Theme>("day")
-  const [screen, setScreen] = useState<"home" | "schedule">("home")
+  const [screen, setScreen] = useState<"home" | "schedule" | SectionType>("home")
   const theme = themes[currentTheme]
 
   if (screen === "schedule") {
     return <Schedule onBack={() => setScreen("home")} theme={theme} />
+  }
+
+  if (screen === "work" || screen === "rest" || screen === "social") {
+    return <SectionScreen section={screen} onBack={() => setScreen("home")} theme={theme} />
   }
 
   return (
@@ -285,7 +290,12 @@ export default function SocialLinksLanding() {
                   key={link.name}
                   href={link.url}
                   className={`block w-full p-4 rounded-lg ${theme.cardBg} ${theme.border} border-2 transition-all duration-200 group cursor-pointer`}
-                  onClick={() => link.name === "Учёба" && setScreen("schedule")}
+                  onClick={() => {
+                    if (link.name === "Учёба") setScreen("schedule")
+                    if (link.name === "Работа") setScreen("work")
+                    if (link.name === "Отдых") setScreen("rest")
+                    if (link.name === "Социальная жизнь") setScreen("social")
+                  }}
                   variants={linkVariants}
                   whileHover="hover"
                   whileTap="tap"
