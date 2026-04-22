@@ -1,0 +1,22 @@
+{
+  "tests": [
+    {
+      "name": "GET psychologists list",
+      "method": "GET",
+      "path": "/?action=list",
+      "headers": { "X-Session-Id": "test-123" },
+      "expectedStatus": 200,
+      "expectedBody": { "psychologists": [] },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "GET my bookings",
+      "method": "GET",
+      "path": "/?action=my_bookings",
+      "headers": { "X-Session-Id": "test-123" },
+      "expectedStatus": 200,
+      "expectedBody": { "bookings": [] },
+      "bodyMatcher": "partial"
+    }
+  ]
+}

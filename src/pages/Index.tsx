@@ -1,14 +1,15 @@
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Sun, Moon, Coffee, Zap, Sparkles, BookOpen, Briefcase, Heart, Users, LayoutGrid, User, Home, ChevronRight } from "lucide-react"
+import { Sun, Moon, Coffee, Zap, Sparkles, BookOpen, Briefcase, Heart, Users, LayoutGrid, User, Home, ChevronRight, MessageCircle } from "lucide-react"
 import Schedule from "@/pages/Schedule"
 import SectionScreen, { SectionType } from "@/pages/SectionScreen"
 import WeekOverview from "@/pages/WeekOverview"
 import Notifications from "@/pages/Notifications"
 import Profile from "@/pages/Profile"
+import Psychology from "@/pages/Psychology"
 
 type Theme = "day" | "night" | "coffee" | "mint" | "electric"
-type Tab = "home" | "schedule" | "overview" | "profile"
+type Tab = "home" | "schedule" | "overview" | "psychology" | "profile"
 type SubScreen = SectionType | "notifications" | null
 
 const themes: Record<Theme, {
@@ -79,6 +80,7 @@ const NAV_TABS = [
   { key: "home" as Tab, label: "Главная", icon: Home },
   { key: "schedule" as Tab, label: "Расписание", icon: BookOpen },
   { key: "overview" as Tab, label: "Обзор", icon: LayoutGrid },
+  { key: "psychology" as Tab, label: "Психолог", icon: MessageCircle },
   { key: "profile" as Tab, label: "Профиль", icon: User },
 ]
 
@@ -205,6 +207,20 @@ export default function App() {
               className="h-full"
             >
               <WeekOverview onBack={() => setActiveTab("home")} theme={theme} hideBack />
+            </motion.div>
+          )}
+
+          {/* PSYCHOLOGY TAB */}
+          {activeTab === "psychology" && (
+            <motion.div
+              key="psychology"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -16 }}
+              transition={{ duration: 0.2 }}
+              className="h-full flex flex-col"
+            >
+              <Psychology onBack={() => setActiveTab("home")} theme={theme} hideBack />
             </motion.div>
           )}
 
