@@ -35,13 +35,14 @@ interface ScheduleEvent {
 
 interface Props {
   onBack: () => void
+  hideBack?: boolean
   theme: {
     bg: string; cardBg: string; text: string; textSecondary: string
     border: string; buttonBg: string; buttonText: string
   }
 }
 
-export default function Schedule({ onBack, theme }: Props) {
+export default function Schedule({ onBack, hideBack, theme }: Props) {
   const [events, setEvents] = useState<ScheduleEvent[]>([])
   const [loading, setLoading] = useState(true)
   const [tab, setTab] = useState<"week" | "add" | "import">("week")
@@ -98,15 +99,17 @@ export default function Schedule({ onBack, theme }: Props) {
   return (
     <motion.div
       className={`min-h-screen ${theme.bg}`}
-      initial={{ opacity: 0, x: 40 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: 40 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
     >
       {/* Header */}
       <div className={`sticky top-0 z-20 ${theme.cardBg} ${theme.border} border-b px-4 py-3 flex items-center gap-3`}>
-        <button onClick={onBack} className={`p-2 rounded-full ${theme.border} border ${theme.text}`}>
-          <ArrowLeft size={18} />
-        </button>
+        {!hideBack && (
+          <button onClick={onBack} className={`p-2 rounded-full ${theme.border} border ${theme.text}`}>
+            <ArrowLeft size={18} />
+          </button>
+        )}
+        {hideBack && <div className="w-2" />}
         <h1 className={`font-bold text-lg ${theme.text}`}>Расписание</h1>
         <div className="flex-1" />
         <button onClick={() => setTab("add")} className={`p-2 rounded-full ${theme.buttonBg} ${theme.buttonText}`}>
