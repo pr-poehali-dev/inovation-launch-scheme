@@ -198,10 +198,30 @@ const themeButtonVariants = {
   },
 }
 
+function getGreeting() {
+  const h = new Date().getHours()
+  if (h >= 5 && h < 12) return "Доброе утро"
+  if (h >= 12 && h < 17) return "Добрый день"
+  if (h >= 17 && h < 22) return "Добрый вечер"
+  return "Доброй ночи"
+}
+
 export default function SocialLinksLanding() {
   const [currentTheme, setCurrentTheme] = useState<Theme>("day")
   const [screen, setScreen] = useState<"home" | "schedule" | "overview" | "notifications" | SectionType>("home")
+  const [name, setName] = useState<string>(() => localStorage.getItem("balance_name") || "")
+  const [nameInput, setNameInput] = useState("")
+  const [editingName, setEditingName] = useState(false)
   const theme = themes[currentTheme]
+
+  const saveName = () => {
+    const trimmed = nameInput.trim()
+    if (!trimmed) return
+    localStorage.setItem("balance_name", trimmed)
+    setName(trimmed)
+    setEditingName(false)
+    setNameInput("")
+  }
 
   if (screen === "schedule") {
     return <Schedule onBack={() => setScreen("home")} theme={theme} />
@@ -260,39 +280,89 @@ export default function SocialLinksLanding() {
         animate="visible"
       >
         {/* Profile Section */}
-        <motion.div className="text-center mb-12" variants={itemVariants}>
+        <motion.div className="text-center mb-10" variants={itemVariants}>
+          {/* Avatar */}
           <motion.div
-            className={`w-24 h-24 mx-auto mb-6 rounded-full ${theme.cardBg} ${theme.border} border-4 flex items-center justify-center`}
-            whileHover={{
-              rotate: 360,
-              transition: { duration: 0.5 },
-            }}
+            className={`w-24 h-24 mx-auto mb-5 rounded-full ${theme.cardBg} ${theme.border} border-4 flex items-center justify-center cursor-pointer`}
+            whileHover={{ rotate: 360, transition: { duration: 0.5 } }}
+            onClick={() => { setEditingName(true); setNameInput(name) }}
+            title="Нажми, чтобы изменить имя"
           >
             <motion.div
               className={`w-16 h-16 rounded-full ${theme.buttonBg} flex items-center justify-center`}
-              animate={{
-                scale: [1, 1.1, 1],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
+              animate={{ scale: [1, 1.08, 1] }}
+              transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
             >
-              <span className={`text-2xl font-bold ${theme.buttonText}`}>B</span>
+              <span className={`text-2xl font-bold ${theme.buttonText}`}>
+                {name ? name[0].toUpperCase() : "B"}
+              </span>
             </motion.div>
           </motion.div>
 
-          <motion.h1 className={`text-3xl font-bold mb-2 ${theme.text}`} variants={itemVariants}>
-            Balance
-          </motion.h1>
+          {/* Greeting or name input */}
+          <AnimatePresence mode="wait">
+            {editingName || !name ? (
+              <motion.div
+                key="input"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                className="mb-4"
+              >
+                <p className={`text-sm ${theme.textSecondary} mb-2`}>
+                  {name ? "Изменить имя" : "Как тебя зовут?"}
+                </p>
+                <div className="flex gap-2 max-w-xs mx-auto">
+                  <input
+                    autoFocus
+                    value={nameInput}
+                    onChange={e => setNameInput(e.target.value)}
+                    onKeyDown={e => e.key === "Enter" && saveName()}
+                    placeholder="Введи имя..."
+                    className={`flex-1 px-4 py-2 rounded-lg ${theme.cardBg} ${theme.border} border ${theme.text} text-sm outline-none text-center`}
+                  />
+                  <button
+                    onClick={saveName}
+                    className={`px-4 py-2 rounded-lg ${theme.buttonBg} ${theme.buttonText} text-sm font-semibold`}
+                  >
+                    ОК
+                  </button>
+                </div>
+                {name && (
+                  <button onClick={() => setEditingName(false)} className={`mt-2 text-xs ${theme.textSecondary} underline`}>
+                    Отмена
+                  </button>
+                )}
+              </motion.div>
+            ) : (
+              <motion.div
+                key="greeting"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                className="mb-4"
+              >
+                <motion.p className={`text-sm ${theme.textSecondary} mb-1`} variants={itemVariants}>
+                  {getGreeting()},
+                </motion.p>
+                <motion.h1
+                  className={`text-3xl font-bold ${theme.text}`}
+                  variants={itemVariants}
+                >
+                  {name}!
+                </motion.h1>
+                <button
+                  onClick={() => { setEditingName(true); setNameInput(name) }}
+                  className={`mt-1 text-xs ${theme.textSecondary} opacity-50 hover:opacity-100 transition-opacity`}
+                >
+                  изменить имя
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-          <motion.p className={`${theme.textSecondary} text-lg`} variants={itemVariants}>
+          <motion.p className={`${theme.textSecondary} text-sm`} variants={itemVariants}>
             Учёба. Работа. Отдых. Жизнь.
-          </motion.p>
-
-          <motion.p className={`${theme.textSecondary} text-sm mt-2 max-w-xs mx-auto`} variants={itemVariants}>
-            Приложение, которое автоматически помогает студентам балансировать между всем важным — без стресса и перегрузок
           </motion.p>
         </motion.div>
 
