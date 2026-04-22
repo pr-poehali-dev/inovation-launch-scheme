@@ -1,9 +1,10 @@
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Sun, Moon, Coffee, Zap, Sparkles, BookOpen, Briefcase, Heart, Users, Download, Bell } from "lucide-react"
+import { Sun, Moon, Coffee, Zap, Sparkles, BookOpen, Briefcase, Heart, Users, Download, Bell, LayoutGrid } from "lucide-react"
 import Icon from "@/components/ui/icon"
 import Schedule from "@/pages/Schedule"
 import SectionScreen, { SectionType } from "@/pages/SectionScreen"
+import WeekOverview from "@/pages/WeekOverview"
 
 type Theme = "day" | "night" | "coffee" | "mint" | "electric"
 
@@ -113,6 +114,12 @@ const appLinks = [
     url: "#",
   },
   {
+    name: "Обзор недели",
+    icon: LayoutGrid,
+    description: "Все сферы жизни в одном месте — баланс на ладони",
+    url: "#",
+  },
+  {
     name: "Скачать приложение",
     icon: Download,
     description: "iOS & Android — бесплатно, без регистрации",
@@ -192,7 +199,7 @@ const themeButtonVariants = {
 
 export default function SocialLinksLanding() {
   const [currentTheme, setCurrentTheme] = useState<Theme>("day")
-  const [screen, setScreen] = useState<"home" | "schedule" | SectionType>("home")
+  const [screen, setScreen] = useState<"home" | "schedule" | "overview" | SectionType>("home")
   const theme = themes[currentTheme]
 
   if (screen === "schedule") {
@@ -201,6 +208,10 @@ export default function SocialLinksLanding() {
 
   if (screen === "work" || screen === "rest" || screen === "social") {
     return <SectionScreen section={screen} onBack={() => setScreen("home")} theme={theme} />
+  }
+
+  if (screen === "overview") {
+    return <WeekOverview onBack={() => setScreen("home")} theme={theme} />
   }
 
   return (
@@ -295,6 +306,7 @@ export default function SocialLinksLanding() {
                     if (link.name === "Работа") setScreen("work")
                     if (link.name === "Отдых") setScreen("rest")
                     if (link.name === "Социальная жизнь") setScreen("social")
+                    if (link.name === "Обзор недели") setScreen("overview")
                   }}
                   variants={linkVariants}
                   whileHover="hover"
