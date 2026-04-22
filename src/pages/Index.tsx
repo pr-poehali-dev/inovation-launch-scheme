@@ -5,6 +5,7 @@ import Icon from "@/components/ui/icon"
 import Schedule from "@/pages/Schedule"
 import SectionScreen, { SectionType } from "@/pages/SectionScreen"
 import WeekOverview from "@/pages/WeekOverview"
+import Notifications from "@/pages/Notifications"
 
 type Theme = "day" | "night" | "coffee" | "mint" | "electric"
 
@@ -199,7 +200,7 @@ const themeButtonVariants = {
 
 export default function SocialLinksLanding() {
   const [currentTheme, setCurrentTheme] = useState<Theme>("day")
-  const [screen, setScreen] = useState<"home" | "schedule" | "overview" | SectionType>("home")
+  const [screen, setScreen] = useState<"home" | "schedule" | "overview" | "notifications" | SectionType>("home")
   const theme = themes[currentTheme]
 
   if (screen === "schedule") {
@@ -212,6 +213,10 @@ export default function SocialLinksLanding() {
 
   if (screen === "overview") {
     return <WeekOverview onBack={() => setScreen("home")} theme={theme} />
+  }
+
+  if (screen === "notifications") {
+    return <Notifications onBack={() => setScreen("home")} theme={theme} />
   }
 
   return (
@@ -307,6 +312,7 @@ export default function SocialLinksLanding() {
                     if (link.name === "Отдых") setScreen("rest")
                     if (link.name === "Социальная жизнь") setScreen("social")
                     if (link.name === "Обзор недели") setScreen("overview")
+                    if (link.name === "Включить напоминания") setScreen("notifications")
                   }}
                   variants={linkVariants}
                   whileHover="hover"
