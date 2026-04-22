@@ -1,0 +1,30 @@
+{
+  "tests": [
+    {
+      "name": "GET events",
+      "method": "GET",
+      "path": "/",
+      "headers": { "X-Session-Id": "test-session-123" },
+      "expectedStatus": 200,
+      "expectedBody": { "events": [] },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "POST event",
+      "method": "POST",
+      "path": "/",
+      "headers": { "X-Session-Id": "test-session-123" },
+      "body": {
+        "title": "Математический анализ",
+        "event_type": "study",
+        "day_of_week": 1,
+        "start_time": "09:00",
+        "end_time": "10:30",
+        "description": "Пара по матану"
+      },
+      "expectedStatus": 201,
+      "expectedBody": { "id": "string" },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
