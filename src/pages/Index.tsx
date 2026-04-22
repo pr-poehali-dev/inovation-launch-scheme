@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Github, Twitter, Instagram, Linkedin, Mail, Globe, Coffee, Sun, Moon, Zap, Sparkles } from "lucide-react"
+import { Sun, Moon, Coffee, Zap, Sparkles, BookOpen, Briefcase, Heart, Users, Download, Bell } from "lucide-react"
+import Icon from "@/components/ui/icon"
 
 type Theme = "day" | "night" | "coffee" | "mint" | "electric"
 
@@ -57,7 +58,7 @@ const themes: Record<Theme, {
     buttonHover: "hover:bg-amber-700",
   },
   mint: {
-    name: "Мята",
+    name: "Фокус",
     icon: Sparkles,
     bg: "bg-emerald-50",
     cardBg: "bg-emerald-100",
@@ -84,13 +85,43 @@ const themes: Record<Theme, {
   },
 }
 
-const socialLinks = [
-  { name: "GitHub", icon: Github, url: "https://github.com", username: "@yourhandle" },
-  { name: "Twitter", icon: Twitter, url: "https://twitter.com", username: "@yourhandle" },
-  { name: "Instagram", icon: Instagram, url: "https://instagram.com", username: "@yourhandle" },
-  { name: "LinkedIn", icon: Linkedin, url: "https://linkedin.com", username: "/in/yourprofile" },
-  { name: "Почта", icon: Mail, url: "mailto:hello@example.com", username: "hello@example.com" },
-  { name: "Сайт", icon: Globe, url: "https://example.com", username: "example.com" },
+const appLinks = [
+  {
+    name: "Учёба",
+    icon: BookOpen,
+    description: "Расписание, дедлайны, задачи — всё под контролем",
+    url: "#",
+  },
+  {
+    name: "Работа",
+    icon: Briefcase,
+    description: "Смены, подработка и карьерные цели в одном месте",
+    url: "#",
+  },
+  {
+    name: "Отдых",
+    icon: Heart,
+    description: "Приложение напомнит восстановить силы вовремя",
+    url: "#",
+  },
+  {
+    name: "Социальная жизнь",
+    icon: Users,
+    description: "Время для друзей и важных встреч — без чувства вины",
+    url: "#",
+  },
+  {
+    name: "Скачать приложение",
+    icon: Download,
+    description: "iOS & Android — бесплатно, без регистрации",
+    url: "#",
+  },
+  {
+    name: "Включить напоминания",
+    icon: Bell,
+    description: "Умные уведомления — без лишнего шума",
+    url: "#",
+  },
 ]
 
 const containerVariants = {
@@ -211,7 +242,7 @@ export default function SocialLinksLanding() {
             }}
           >
             <motion.div
-              className={`w-16 h-16 rounded-full ${theme.buttonBg}`}
+              className={`w-16 h-16 rounded-full ${theme.buttonBg} flex items-center justify-center`}
               animate={{
                 scale: [1, 1.1, 1],
               }}
@@ -220,30 +251,34 @@ export default function SocialLinksLanding() {
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
-            />
+            >
+              <span className={`text-2xl font-bold ${theme.buttonText}`}>B</span>
+            </motion.div>
           </motion.div>
 
           <motion.h1 className={`text-3xl font-bold mb-2 ${theme.text}`} variants={itemVariants}>
-            PixelLink
+            Balance
           </motion.h1>
 
           <motion.p className={`${theme.textSecondary} text-lg`} variants={itemVariants}>
-            Все мои ссылки в одном месте
+            Учёба. Работа. Отдых. Жизнь.
+          </motion.p>
+
+          <motion.p className={`${theme.textSecondary} text-sm mt-2 max-w-xs mx-auto`} variants={itemVariants}>
+            Приложение, которое автоматически помогает студентам балансировать между всем важным — без стресса и перегрузок
           </motion.p>
         </motion.div>
 
-        {/* Social Links */}
+        {/* App Links */}
         <motion.div className="space-y-4" variants={containerVariants}>
           <AnimatePresence>
-            {socialLinks.map((link) => {
+            {appLinks.map((link) => {
               const IconComponent = link.icon
               return (
                 <motion.a
                   key={link.name}
                   href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`block w-full p-4 rounded-lg ${theme.cardBg} ${theme.border} border-2 transition-all duration-200 group`}
+                  className={`block w-full p-4 rounded-lg ${theme.cardBg} ${theme.border} border-2 transition-all duration-200 group cursor-pointer`}
                   variants={linkVariants}
                   whileHover="hover"
                   whileTap="tap"
@@ -260,7 +295,7 @@ export default function SocialLinksLanding() {
                       </motion.div>
                       <div>
                         <h3 className={`font-semibold ${theme.text}`}>{link.name}</h3>
-                        <p className={`text-sm ${theme.textSecondary}`}>{link.username}</p>
+                        <p className={`text-sm ${theme.textSecondary}`}>{link.description}</p>
                       </div>
                     </div>
                     <motion.div
@@ -272,13 +307,36 @@ export default function SocialLinksLanding() {
                         ease: "easeInOut",
                       }}
                     >
-                      <span className="text-xl">&rarr;</span>
+                      <Icon name="ChevronRight" size={20} />
                     </motion.div>
                   </div>
                 </motion.a>
               )
             })}
           </AnimatePresence>
+        </motion.div>
+
+        {/* Stats Row */}
+        <motion.div
+          className={`mt-8 p-4 rounded-lg ${theme.cardBg} ${theme.border} border-2`}
+          variants={itemVariants}
+        >
+          <div className="flex justify-around text-center">
+            <div>
+              <p className={`text-2xl font-bold ${theme.text}`}>4</p>
+              <p className={`text-xs ${theme.textSecondary}`}>сферы жизни</p>
+            </div>
+            <div className={`w-px ${theme.border} border-l`} />
+            <div>
+              <p className={`text-2xl font-bold ${theme.text}`}>1</p>
+              <p className={`text-xs ${theme.textSecondary}`}>приложение</p>
+            </div>
+            <div className={`w-px ${theme.border} border-l`} />
+            <div>
+              <p className={`text-2xl font-bold ${theme.text}`}>0</p>
+              <p className={`text-xs ${theme.textSecondary}`}>стресса</p>
+            </div>
+          </div>
         </motion.div>
 
         {/* Footer */}
@@ -292,7 +350,7 @@ export default function SocialLinksLanding() {
               ease: "easeInOut",
             }}
           >
-            Сделано с заботой в PixelLink
+            Balance — твой личный планировщик жизни
           </motion.p>
         </motion.div>
       </motion.div>
